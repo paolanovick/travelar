@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -24,7 +23,8 @@ const ItemDetailContainer = () => {
         const parser = new XMLParser();
         const jsonData = parser.parse(xml); // Parseamos el XML a JSON
 
-       
+        console.log("jsonData:", jsonData);
+        console.log("Estructura de paquetes:", jsonData?.root?.paquetes);
 
         const paquetes = jsonData?.root?.paquetes?.paquete;
         if (paquetes && paquetes.length > 0) {
@@ -90,7 +90,7 @@ const ItemDetailContainer = () => {
   return (
     <Container className="item-detail-container">
       <h1 className="titulo-detalle text-center my-4">
-        Detalle del Producto {titulo}
+        Detalle del Producto {idProducto}
       </h1>
 
       <Row className="producto-card">
@@ -185,12 +185,8 @@ const ItemDetailContainer = () => {
           <strong>Edad máxima para menores:</strong> {edad_menores} años
         </p>
 
-         <Button
-          variant="primary"
-          className="boton-compra"
-          onClick={() => agregarAlCarrito(detalleProducto)}
-        >
-          Agregar al carrito
+        <Button variant="primary" className="boton-compra">
+          Comprar ahora
         </Button>
       </div>
     </Container>

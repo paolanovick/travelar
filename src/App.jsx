@@ -1,4 +1,3 @@
-
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -8,7 +7,6 @@ import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
 import "bootstrap/dist/css/bootstrap.min.css";
-// Importamos React Router
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
@@ -17,13 +15,12 @@ const App = () => {
   const [cartCount, setCartCount] = useState(0);
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
-  const [carritoValor, setCarritoValor] = useState(0);
   const [carrito, setCarrito] = useState([]); // El estado del carrito
 
   useEffect(() => {
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
-        console.log("Respuesta de fetch:", response);
+      
         if (!response.ok) {
           throw new Error("No se pudo cargar el archivo XML.");
         }
@@ -44,12 +41,9 @@ const App = () => {
           // Extraer países únicos para los filtros
           const paisesUnicos = [
             ...new Set(
-              paquetesData.flatMap((paquete) => {
-                if (paquete?.destinos?.destino?.pais) {
-                  return [paquete.destinos.destino.pais];
-                }
-                return [];
-              })
+              paquetesData.flatMap(
+                (paquete) => paquete?.destinos?.destino?.pais || []
+              )
             ),
           ];
           setPaises(paisesUnicos);
@@ -65,7 +59,6 @@ const App = () => {
   }, []);
 
   // Función para manejar el cambio de país seleccionado
-  // Función para manejar el cambio de país seleccionado
   const handlePaisSeleccionado = (pais) => {
     setPaisSeleccionado(pais);
     if (pais === "") {
@@ -78,21 +71,20 @@ const App = () => {
       setPaquetesFiltrados(paquetesFiltradosPorPais);
     }
   };
-  
-  const onAddToCart = (paquete) => {
-    console.log("Producto agregado al carrito:", paquete);
-    setCartCount(cartCount + 1); // Incrementa el contador del carrito
-  };
 
   const agregarAlCarrito = (producto) => {
-    setCarrito((prevCarrito) => {
-      const nuevoCarrito = [...prevCarrito, producto];
-
-      return nuevoCarrito;
-    });
-
-    setCartCount((prevCount) => prevCount + 1); // Actualizar el contador visual del carrito
+    const productoExistente = carrito.some(
+      (item) => item.paquete_externo_id === producto.paquete_externo_id
+    );
+    if (!productoExistente) {
+      // Agregar producto al carrito
+      setCarrito([...carrito, producto]); // Suponiendo que carrito es el estado
+      setCartCount(cartCount + 1); // Incrementa el contador del carrito
+    } else {
+      console.log("El producto ya está en el carrito");
+    }
   };
+
   return (
     <BrowserRouter>
       <div>

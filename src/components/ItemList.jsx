@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types"; // Importa PropTypes
 import { Link } from "react-router-dom";
 import Button from "./Button"; // Importa el componente Button
-const ItemList = ({ paquetes, onAddToCart }) => {
+const ItemList = ({ paquetes}) => {
   return (
     <div className="row">
       {paquetes.map((paquete) => (
