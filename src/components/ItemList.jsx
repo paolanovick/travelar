@@ -3,8 +3,10 @@
 import React from "react";
 import PropTypes from "prop-types"; // Importa PropTypes
 import { Link } from "react-router-dom";
-import Button from "./Button"; // Importa el componente Button
-const ItemList = ({ paquetes}) => {
+import Button from "./Button";
+import { useCart } from "../context/CartContext"; // Importa el componente Button
+const ItemList = ({ paquetes }) => {
+     const { agregarAlCarrito } = useCart();
   return (
     <div className="row">
       {paquetes.map((paquete) => (
@@ -28,10 +30,16 @@ const ItemList = ({ paquetes}) => {
                   {/* El onClick puede ser opcional si solo navegas */}
                 </Link>{" "}
               
-              </div>
+                      </div>
+              
+         
+       
+      
+            
             </div>
           </div>
-        </div>
+          </div>
+          
       ))}
     </div>
   );

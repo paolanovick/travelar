@@ -4,14 +4,10 @@ import React from "react";
 import Button from "./Button";
 import Carrito from "./Carrito";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; 
 
-const NavBar = ({
-  nombre,
-  botonLabel,
-  carritoValor,
-  paises,
-  onPaisSeleccionado,
-}) => {
+const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
+  const { cartCount } = useCart();
   return (
     <nav
       style={{
@@ -29,10 +25,7 @@ const NavBar = ({
       </div>
 
       <Link to="/paquetes" style={{ textDecoration: "none" }}>
-        <Button
-          label={botonLabel}
-          onClick={() => console.log(`${botonLabel} clickeado`)}
-        />
+        <Button label={botonLabel} />
       </Link>
 
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
@@ -43,12 +36,14 @@ const NavBar = ({
             onClick={() => onPaisSeleccionado(pais)}
           />
         ))}
-        
       </div>
 
-      <Carrito valor={carritoValor > 0 ? carritoValor : "Vacío"} />
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {/* Aquí agregamos el componente Carrito */}
+        <Carrito valor={cartCount} />
+      </div>
     </nav>
+    
   );
 };
-
 export default NavBar;

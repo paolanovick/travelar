@@ -6,21 +6,20 @@ import { XMLParser } from "fast-xml-parser"; // Importa el parser XML
 import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
+import { CartProvider, useCart } from "./context/CartContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
   const [paquetesFiltrados, setPaquetesFiltrados] = useState([]); // Paquetes filtrados por país
   const [error, setError] = useState(null);
-  const [cartCount, setCartCount] = useState(0);
+
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
-  const [carrito, setCarrito] = useState([]); // El estado del carrito
 
   useEffect(() => {
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
-      
         if (!response.ok) {
           throw new Error("No se pudo cargar el archivo XML.");
         }
@@ -29,16 +28,11 @@ const App = () => {
       .then((data) => {
         const parser = new XMLParser();
         const jsonData = parser.parse(data);
-
         if (jsonData?.root?.paquetes?.paquete) {
           const paquetesData = jsonData.root.paquetes.paquete;
-
-          // Limitar la visualización inicial a 50 paquetes
           const paquetesLimitados = paquetesData.slice(0, 50);
           setPaquetes(paquetesData);
           setPaquetesFiltrados(paquetesLimitados);
-
-          // Extraer países únicos para los filtros
           const paisesUnicos = [
             ...new Set(
               paquetesData.flatMap(
@@ -72,52 +66,38 @@ const App = () => {
     }
   };
 
-  const agregarAlCarrito = (producto) => {
-    const productoExistente = carrito.some(
-      (item) => item.paquete_externo_id === producto.paquete_externo_id
-    );
-    if (!productoExistente) {
-      // Agregar producto al carrito
-      setCarrito([...carrito, producto]); // Suponiendo que carrito es el estado
-      setCartCount(cartCount + 1); // Incrementa el contador del carrito
-    } else {
-      console.log("El producto ya está en el carrito");
-    }
-  };
-
   return (
-    <BrowserRouter>
-      <div>
-        <NavBar
-          nombre="TravelAr"
-          botonLabel="Ver Paquetes"
-          carritoValor={cartCount}
-          paises={paises}
-          onPaisSeleccionado={handlePaisSeleccionado}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={<ItemListContainer paquetes={paquetesFiltrados} />}
+    <CartProvider>
+      <BrowserRouter>
+        <div>
+          <NavBar
+            nombre="TravelAr"
+            botonLabel="Ver Paquetes"
+            paises={paises}
+            onPaisSeleccionado={handlePaisSeleccionado}
           />
-          <Route
-            path="/paquetes"
-            element={
-              <ItemList
-                paquetes={paquetesFiltrados}
-                onAddToCart={agregarAlCarrito}
-              />
-            }
-          />
-          <Route
-            path="/detalle/:idProducto"
-            element={
-              <ItemDetailContainer agregarAlCarrito={agregarAlCarrito} />
-            }
-          />
-        </Routes>
-      </div>
-    </BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={<ItemListContainer paquetes={paquetesFiltrados} />}
+            />
+            <Route
+              path="/paquetes"
+              element={
+                <ItemList
+                  paquetes={paquetesFiltrados}
+                  // Llamamos a la función que viene del contexto
+                />
+              }
+            />
+            <Route
+              path="/detalle/:idProducto"
+              element={<ItemDetailContainer />}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </CartProvider>
   );
 };
 

@@ -2,7 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { XMLParser } from "fast-xml-parser";
-import { Container, Row, Col, Button, Card, Image } from "react-bootstrap";
+import Carrito from './Carrito';
+import Button from "./Button"; 
+import { useCart } from "../context/CartContext";
+import { Container, Row, Col,  Card, Image } from "react-bootstrap";
 
 
 
@@ -10,7 +13,9 @@ const ItemDetailContainer = () => {
   const [detalleProducto, setDetalleProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { idProducto } = useParams(); // Obtenemos el ID del producto de la URL
+  const { idProducto } = useParams();
+  const [cart, setCart] = useState(0);
+  const { addToCart } = useCart(); // Obtenemos el ID del producto de la URL
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,12 +43,6 @@ const ItemDetailContainer = () => {
 
         // Buscar el producto que coincida con el idProducto
         const producto = paquetes?.find((item) => {
-          console.log("Verificando producto:", item);
-          console.log(
-            "Comparando idProducto con paquete_externo_id:",
-            String(item.paquete_externo_id),
-            String(idProducto)
-          );
           return String(item.paquete_externo_id) === String(idProducto);
         });
 
@@ -62,6 +61,11 @@ const ItemDetailContainer = () => {
 
     fetchData();
   }, [idProducto]);
+  // Función que se ejecuta al hacer clic en el botón "Comprar ahora"
+  // Handler for adding to cart
+  const handleAddToCart = () => {
+    addToCart(); // Increment the cart count using the context method
+  };
 
   if (loading) {
     return <p>Cargando...</p>;
@@ -184,10 +188,9 @@ const ItemDetailContainer = () => {
         <p>
           <strong>Edad máxima para menores:</strong> {edad_menores} años
         </p>
-
-        <Button variant="primary" className="boton-compra">
-          Comprar ahora
-        </Button>
+        <div className="detalles-paquete mt-4">
+          <Button label="Comprar ahora" onClick={handleAddToCart} />
+        </div>
       </div>
     </Container>
   );
