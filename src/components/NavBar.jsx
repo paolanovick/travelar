@@ -25,25 +25,18 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
       </div>
 
       <Link to="/paquetes" style={{ textDecoration: "none" }}>
-        <Button label={botonLabel} />
+        <Button
+          label={botonLabel}
+          onClick={() => console.log("Navegando a Paquetes")}
+        />
       </Link>
 
-      <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-        {paises.map((pais, index) => (
-          <Button
-            key={index}
-            label={pais}
-            onClick={() => onPaisSeleccionado(pais)}
-          />
-        ))}
-      </div>
-
       <div style={{ display: "flex", alignItems: "center" }}>
-        {/* Aquí agregamos el componente Carrito */}
-        <Carrito valor={cartCount} />
+        <Link to="/cart" style={{ textDecoration: "none", marginLeft: "20px" }}>
+          <button>🛒 Carrito ({cartCount})</button>
+        </Link>
       </div>
     </nav>
-    
   );
 };
 export default NavBar;

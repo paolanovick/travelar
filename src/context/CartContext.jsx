@@ -1,22 +1,36 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable no-unused-vars */
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
+// Crear el contexto del carrito
 const CartContext = createContext();
 
-export const useCart = () => useContext(CartContext);
-
+// Proveedor del carrito
 export const CartProvider = ({ children }) => {
-  const [cartCount, setCartCount] = useState(0);
+  const [cart, setCart] = useState([]); // Estado del carrito
+  const [purchase, setPurchase] = useState(null); // Estado para almacenar los detalles de la compra
 
-  const addToCart = () => {
-    setCartCount((prevCount) => prevCount + 1); // Incrementa el contador del carrito
+  const addToCart = (producto) => {
+    setCart((prevCart) => [...prevCart, producto]);
   };
 
+  const cartCount = cart.length; // Contador de productos en el carrito
+
   return (
-    <CartContext.Provider value={{ cartCount, addToCart }}>
+    <CartContext.Provider
+      value={{ cart, setCart, addToCart, cartCount, purchase, setPurchase }}
+    >
       {children}
     </CartContext.Provider>
   );
+};
+
+// Hook para usar el contexto
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
 };
