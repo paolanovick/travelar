@@ -12,6 +12,7 @@ import { CartProvider, useCart } from "./context/CartContext";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Confirmation from "./components/Confirmation";
+import CardWidget from "./components/CardWidget";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
@@ -100,6 +101,7 @@ const App = () => {
               path="/"
               element={<ItemListContainer paquetes={paquetesFiltrados} />}
             />
+
             <Route
               path="/paquetes"
               element={<ItemList paquetes={paquetesFiltrados} />}
@@ -110,8 +112,10 @@ const App = () => {
             />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+
             <Route path="/confirmacion" element={<Confirmation />} />
           </Routes>
+         
           <Footer />
         </div>
       </BrowserRouter>

@@ -51,32 +51,36 @@ const ItemDetailContainer = () => {
   }, [idProducto]);
 
   // Función para obtener el precio disponible
-   const obtenerPrecioValido = (paquete) => {
-     // Acceder a los precios de las distintas opciones de paquetes
-     const precios = [
-       paquete.salidas?.salida?.doble_precio,
-       paquete.salidas?.salida?.triple_precio,
-       paquete.salidas?.salida?.familia_1_precio,
-     ];
+  const obtenerPrecioValido = (paquete) => {
+    // Acceder a los precios de las distintas opciones de paquetes
+    const precios = [
+      paquete.salidas?.salida?.doble_precio,
+      paquete.salidas?.salida?.triple_precio,
+      paquete.salidas?.salida?.familia_1_precio,
+    ];
 
-     // Filtrar precios válidos (solo los números positivos)
-     const preciosValidos = precios
-       .filter((precio) => !isNaN(precio) && parseFloat(precio) > 0)
-       .map((precio) => parseFloat(precio));
+    // Filtrar precios válidos (solo los números positivos)
+    const preciosValidos = precios
+      .filter((precio) => !isNaN(precio) && parseFloat(precio) > 0)
+      .map((precio) => parseFloat(precio));
 
-     // Si hay precios válidos, devolver el primero formateado
-     if (preciosValidos.length > 0) {
-       return preciosValidos[0].toLocaleString("es-AR", {
-         style: "currency",
-         currency: "ARS",
-       });
-     }
+    // Si hay precios válidos, devolver el primero formateado
+    if (preciosValidos.length > 0) {
+      return preciosValidos[0].toLocaleString("es-AR", {
+        style: "currency",
+        currency: "ARS",
+      });
+    }
 
-     return "No disponible"; // Si no hay precios válidos
-    };
-    
+    return "No disponible"; // Si no hay precios válidos
+  };
+
   const handleAddToCart = () => {
-    addToCart(detalleProducto); // Añadir al carrito utilizando el método del contexto
+    let to_add = {
+      detalleProducto,
+      quantity: 1,
+    };
+    addToCart(to_add); // Añadir al carrito utilizando el método del contexto
   };
 
   if (loading) {
@@ -103,52 +107,51 @@ const ItemDetailContainer = () => {
     precios,
   } = detalleProducto || {};
 
- const renderPrecio = (paquete) => {
-   // Llamamos a la función obtenerPrecioValido para obtener el precio
-   const precioFormateado = obtenerPrecioValido(paquete);
+  const renderPrecio = (paquete) => {
+    // Llamamos a la función obtenerPrecioValido para obtener el precio
+    const precioFormateado = obtenerPrecioValido(paquete);
 
-   if (precioFormateado === "No disponible") {
-     return (
-       <p>
-         <strong>Precio no disponible</strong>
-       </p>
-     );
-   }
+    if (precioFormateado === "No disponible") {
+      return (
+        <p>
+          <strong>Precio no disponible</strong>
+        </p>
+      );
+    }
 
-   return (
-     <p>
-       <strong>Precio:</strong> {precioFormateado}
-     </p>
-   );
- };
-
+    return (
+      <p>
+        <strong>Precio:</strong> {precioFormateado}
+      </p>
+    );
+  };
 
   return (
     <Container className="item-detail-container">
       <h1 className="titulo-detalle text-center my-4">
         Detalle del Producto {idProducto}
       </h1>
-     
-      <Row className="producto-card">
-  <Col md={4} className="imagen-principal">
-    <Image src={imagen_principal} alt={titulo} fluid rounded />
-  </Col>
 
-  <Col md={8} className="descripcion">
-    <Card className="product-details">
-      <Card.Body>
-        <Card.Title>{titulo}</Card.Title>
-        <Card.Text>{descripcion}</Card.Text>
-        {detalleProducto && (
-          <div className="precios">
-            {renderPrecio(detalleProducto)} {/* Muestra el precio aquí */}
-          </div>
-        )}
-        <Button label="Comprar ahora" onClick={handleAddToCart} />
-      </Card.Body>
-    </Card>
-  </Col>
-</Row>
+      <Row className="producto-card">
+        <Col md={4} className="imagen-principal">
+          <Image src={imagen_principal} alt={titulo} fluid rounded />
+        </Col>
+
+        <Col md={8} className="descripcion">
+          <Card className="product-details">
+            <Card.Body>
+              <Card.Title>{titulo}</Card.Title>
+              <Card.Text>{descripcion}</Card.Text>
+              {detalleProducto && (
+                <div className="precios">
+                  {renderPrecio(detalleProducto)} {/* Muestra el precio aquí */}
+                </div>
+              )}
+              <Button label="Agregar al carrito" onClick={handleAddToCart} />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <div className="detalles-paquete mt-4">
         <h2 className="text-center text-primary mb-4">
           ¡Descubre Tu Próximo Destino!

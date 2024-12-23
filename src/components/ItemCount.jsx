@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ItemCount = ({ stock, initial = 1, onAdd }) => {
-  const [count, setCount] = useState(initial);
+const ItemCount = ({ stock, onAdd, item, cart }) => {
+  const [count, setCount] = useState(stock);
 
   const handleIncrement = () => {
-    if (count < stock) setCount(count + 1);
+    setCount(count + 1);
+    onAdd(item);
   };
 
   const handleDecrement = () => {
@@ -18,7 +19,6 @@ const ItemCount = ({ stock, initial = 1, onAdd }) => {
       <button onClick={handleDecrement}>-</button>
       <span>{count}</span>
       <button onClick={handleIncrement}>+</button>
-      <button onClick={() => onAdd(count)}>Agregar al carrito</button>
     </div>
   );
 };

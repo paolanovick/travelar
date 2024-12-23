@@ -1,33 +1,37 @@
-
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button"; // Importa tu componente de botón personalizado
+import Button from "../components/Button";
+import ItemCount from "../components/ItemCount"; // Importa tu componente de botón personalizado
 
 const Cart = () => {
   const { cart, setCart } = useCart();
-  const navigate = useNavigate();
+  const { addToCart } = useCart(); // Obtención del ID del producto de la URL
 
-  // Función para eliminar un artículo del carrito
+  console.log("Cart es :", cart);
+  const navigate = useNavigate();
+  const [totalBeforeClear, setTotalBeforeClear] = useState(0);
+
   const handleRemoveFromCart = (paquete_externo_id) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => item.paquete_externo_id !== paquete_externo_id)
+      prevCart.filter(
+        (item) => item.detalleProducto.paquete_externo_id !== paquete_externo_id
+      )
     );
   };
 
-  // Función para vaciar el carrito
-  const handleClearCart = () => {
+  const handleCheckout = () => {
+    console.log("Iniciando el proceso de compra...");
+    const total = calcularTotal(); // Calcula el total
+    const formattedTotal = new Intl.NumberFormat().format(total); // Calcula el total
+    console.log("Total antes de vaciar el carrito:", formattedTotal);
+
     setCart([]);
+    console.log("Carrito después de vaciar:", cart);
+
+    navigate(`/checkout?total=${total}`);
   };
-
-  // Función para finalizar la compra
- const handleCheckout = () => {
-   console.log("Finalizando compra...");
-   handleClearCart();
-   navigate("/checkout");
- };
-
 
   // Función para obtener el primer precio válido de un artículo
   const obtenerPrecioValido = (item) => {
@@ -44,14 +48,15 @@ const Cart = () => {
     return preciosValidos.length > 0 ? preciosValidos[0] : 0;
   };
 
-  // Función para calcular el total del carrito
   const calcularTotal = () => {
-    return cart
-      .reduce((total, item) => total + obtenerPrecioValido(item), 0)
-      .toLocaleString("es-AR", {
-        style: "currency",
-        currency: "ARS",
-      });
+    return cart.reduce((total, paquete) => {
+      const precio = obtenerPrecioValido(paquete);
+
+      // Asegúrate de que precio sea un número válido antes de continuar
+      const precioNumerico = isNaN(precio) ? 0 : precio; // Si precio no es un número válido, ponlo en 0
+
+      return total + precioNumerico;
+    }, 0);
   };
 
   return (
@@ -77,7 +82,7 @@ const Cart = () => {
           <div>
             {cart.map((item) => (
               <div
-                key={item.paquete_externo_id}
+                key={item.detalleProducto.paquete_externo_id}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -91,8 +96,8 @@ const Cart = () => {
               >
                 <div style={{ flex: 2, display: "flex", alignItems: "center" }}>
                   <img
-                    src={item.imagen_principal}
-                    alt={item.titulo}
+                    src={item.detalleProducto.imagen_principal}
+                    alt={item.detalleProducto.titulo}
                     style={{
                       width: "100px",
                       height: "100px",
@@ -104,11 +109,16 @@ const Cart = () => {
                   />
                   <div>
                     <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>
-                      {item.titulo}
+                      {item.detalleProducto.titulo}
                     </h3>
                     <p style={{ margin: "5px 0", color: "#777" }}>
-                      {item.descripcion}
+                      {item.detalleProducto.descripcion}
                     </p>
+                    <ItemCount
+                      stock={item.quantity}
+                      item={item}
+                      onAdd={addToCart}
+                    />
                   </div>
                 </div>
 
@@ -129,7 +139,9 @@ const Cart = () => {
                   <Button
                     label="Eliminar"
                     onClick={() =>
-                      handleRemoveFromCart(item.paquete_externo_id)
+                      handleRemoveFromCart(
+                        item.detalleProducto.paquete_externo_id
+                      )
                     }
                     style={{
                       backgroundColor: "#ff3b30",

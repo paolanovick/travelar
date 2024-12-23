@@ -14,6 +14,7 @@
   }
 }
 
+
 .card {
   padding: 2em;
 }
@@ -105,16 +106,6 @@
   justify-content: center; /* Centrar las tarjetas */
 }
 
-@media (max-width: 767px) {
-  .card {
-    margin: 10px;
-    /* Reduce el tamaño de las tarjetas en dispositivos más pequeños */
-  }
-
-  .card-img-top {
-    height: 150px; /* Reducir la altura de la imagen en pantallas pequeñas */
-  }
-}
 
 .cart-widget {
   position: relative;
@@ -133,4 +124,114 @@
 
 .item-count button {
   margin: 5px;
+}
+.checkout-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.checkout-summary {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-summary h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.checkout-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkout-summary li {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.checkout-summary p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Contenedor que contiene las tarjetas */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6 tarjetas por fila en PC */
+  gap: 20px; /* Espacio entre las tarjetas */
+  padding: 20px;
+}
+
+/* Para tabletas (pantallas medianas) */
+@media (max-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(4, 1fr); /* 4 tarjetas por fila en tablet */
+  }
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 tarjeta por fila en móviles */
+  }
 }

@@ -2,11 +2,12 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { createContext, useContext, useState } from "react";
-import App from "./App";
+import App from './App';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+   const [purchaseDetails, setPurchaseDetails] = useState(null);
 
   const addToCart = (item) => {
     setCartItems((prevItems) => [...prevItems, item]);
@@ -24,10 +25,11 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart, itemCount }}
+      value={{ cartItems, addToCart, removeFromCart, clearCart, itemCount,   purchaseDetails,
+        setPurchaseDetails }}
     >
           {children}
-         
+           
     </CartContext.Provider>
   );
 };

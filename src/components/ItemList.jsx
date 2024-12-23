@@ -4,7 +4,9 @@ import React from "react";
 import PropTypes from "prop-types"; // Importa PropTypes
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import { useCart } from "../context/CartContext"; // Importa el componente Button
+import { useCart } from "../context/CartContext";
+
+// Importa el componente Button
 
 const ItemList = ({ paquetes }) => {
   const { agregarAlCarrito } = useCart();
@@ -53,10 +55,7 @@ const ItemList = ({ paquetes }) => {
               <div className="card-body">
                 <h5 className="card-title">{paquete.titulo}</h5>
                 <p className="card-text">{paquete.descripcion}</p>
-
-                {/* Mostrar precio formateado */}
                 <p>Precio: {precioFormateado}</p>
-
                 <div className="m-3">
                   <Link to={`/detalle/${paquete.paquete_externo_id}`}>
                     <Button label="Ver más" onClick={() => {}} />
@@ -70,6 +69,7 @@ const ItemList = ({ paquetes }) => {
     </div>
   );
 };
+
 
 ItemList.propTypes = {
   paquetes: PropTypes.array.isRequired, // Asegúrate de que el array de paquetes sea requerido
