@@ -220,7 +220,104 @@ button:hover {
   grid-template-columns: repeat(6, 1fr); /* 6 tarjetas por fila en PC */
   gap: 20px; /* Espacio entre las tarjetas */
   padding: 20px;
+}/* Estilo general del contenedor */
+.confirmation-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
+
+/* Título principal */
+.confirmation-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Sección del resumen */
+.confirmation-summary {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+/* Títulos de secciones */
+.section-title {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* Lista de items */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-name {
+  font-weight: bold;
+  color: #555;
+}
+
+.item-details {
+  color: #999;
+}
+
+/* Total */
+.total-amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Información del cliente */
+.customer-info {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* Botón */
+.back-button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.back-button:hover {
+  background: #0056b3;
+}
+
+/* Mensaje de error */
+.no-info {
+  text-align: center;
+  color: #ff0000;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
 
 /* Para tabletas (pantallas medianas) */
 @media (max-width: 1024px) {

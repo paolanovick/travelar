@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
@@ -5,11 +6,16 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import ItemCount from "../components/ItemCount"; // Importa tu componente de botón personalizado
 
-const Cart = () => {
-  const { cart, setCart } = useCart();
-  const { addToCart } = useCart(); // Obtención del ID del producto de la URL
+// Función exportada fuera del componente Cart.jsx
+export const obtenerPrecioValido = (paquete) => {
+  console.log("el paquete es :", paquete);
+  const precio = paquete.detalleProducto.salidas.salida.doble_precio;
+  return precio * paquete.quantity;
+};
 
-  console.log("Cart es :", cart);
+const Cart = () => {
+  const { cart, setCart, addToCart, decrementFromCart } = useCart();
+  console.log("Cart es  :", cart);
   const navigate = useNavigate();
   const [totalBeforeClear, setTotalBeforeClear] = useState(0);
 
@@ -23,40 +29,23 @@ const Cart = () => {
 
   const handleCheckout = () => {
     console.log("Iniciando el proceso de compra...");
-    const total = calcularTotal(); // Calcula el total
-    const formattedTotal = new Intl.NumberFormat().format(total); // Calcula el total
+    const total = calcularTotal();
+    console.log("el total es : ", total); // Calcula el total
+    const formattedTotal = new Intl.NumberFormat().format(total);
     console.log("Total antes de vaciar el carrito:", formattedTotal);
-
-    setCart([]);
+    setTotalBeforeClear(total);
+    setCart([]); // Limpiar el carrito
     console.log("Carrito después de vaciar:", cart);
 
     navigate(`/checkout?total=${total}`);
   };
 
-  // Función para obtener el primer precio válido de un artículo
-  const obtenerPrecioValido = (item) => {
-    const precios = [
-      item?.salidas?.salida?.doble_precio,
-      item?.salidas?.salida?.triple_precio,
-      item?.salidas?.salida?.familia_1_precio,
-    ];
-
-    const preciosValidos = precios
-      .filter((precio) => !isNaN(precio) && parseFloat(precio) > 0)
-      .map((precio) => parseFloat(precio));
-
-    return preciosValidos.length > 0 ? preciosValidos[0] : 0;
-  };
-
   const calcularTotal = () => {
-    return cart.reduce((total, paquete) => {
-      const precio = obtenerPrecioValido(paquete);
-
-      // Asegúrate de que precio sea un número válido antes de continuar
-      const precioNumerico = isNaN(precio) ? 0 : precio; // Si precio no es un número válido, ponlo en 0
-
-      return total + precioNumerico;
-    }, 0);
+    let total = 0;
+    cart.map((item) => {
+      total += item.detalleProducto.salidas.salida.doble_precio * item.quantity;
+    });
+    return total;
   };
 
   return (
@@ -118,6 +107,7 @@ const Cart = () => {
                       stock={item.quantity}
                       item={item}
                       onAdd={addToCart}
+                      decrement={decrementFromCart}
                     />
                   </div>
                 </div>
@@ -181,7 +171,11 @@ const Cart = () => {
             marginBottom: "10px",
           }}
         >
-          Total: {calcularTotal()}
+          Total:{" "}
+          {calcularTotal().toLocaleString("es-AR", {
+            style: "currency",
+            currency: "ARS",
+          })}
         </p>
         <Button label="Finalizar Compra" onClick={handleCheckout} />
       </div>

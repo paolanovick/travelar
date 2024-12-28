@@ -18,16 +18,27 @@ const Checkout = () => {
 
   // Función para obtener el total de la compra desde la URL
   useEffect(() => {
+    
     const queryParams = new URLSearchParams(location.search);
     const totalFromUrl = queryParams.get("total");
     if (totalFromUrl) {
       setTotal(parseFloat(totalFromUrl.replace(/,/g, ""))); // Establecer el total extraído de la URL
     }
   }, [location]);
+  
+  
+const formatTotal = (value) => {
+  const valorNumerico = parseFloat(value);
+  if (isNaN(valorNumerico)) {
+    return "Total no disponible"; // Maneja el caso de valor no válido
+  }
 
-  const formatTotal = (value) => {
-    return new Intl.NumberFormat().format(value); // Formato para el total
-  };
+  return valorNumerico.toLocaleString("es-AR", {
+    style: "currency",
+    currency: "ARS",
+  });
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

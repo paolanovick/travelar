@@ -20,6 +20,15 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]); // Estado del carrito
   const [purchaseDetails, setPurchaseDetails] = useState(null); // Detalles de la compra
 
+  const decrementFromCart = (itemId) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.id === itemId ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
   // Agregar producto al carrito
   const addToCart = (item) => {
     let to_add = false;
@@ -67,6 +76,7 @@ export const CartProvider = ({ children }) => {
         cart,
         setCart, // Permite modificar el carrito manualmente
         addToCart,
+        decrementFromCart,
         removeFromCart,
         clearCart,
         itemCount,

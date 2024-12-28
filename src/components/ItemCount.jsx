@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 
-const ItemCount = ({ stock, onAdd, item, cart }) => {
+const ItemCount = ({ stock, onAdd, item, decrement }) => {
   const [count, setCount] = useState(stock);
 
   const handleIncrement = () => {
@@ -11,7 +11,11 @@ const ItemCount = ({ stock, onAdd, item, cart }) => {
   };
 
   const handleDecrement = () => {
-    if (count > 1) setCount(count - 1);
+    console.log("Estoy aca");
+    if (count > 1) {
+      setCount(count - 1);
+      decrement(item.id);
+    }
   };
 
   return (
