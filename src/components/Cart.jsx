@@ -103,6 +103,10 @@ const Cart = () => {
                     <p style={{ margin: "5px 0", color: "#777" }}>
                       {item.detalleProducto.descripcion}
                     </p>
+                    <p style={{ margin: "5px 0", color: "#777" }}>
+                      vigencia: {item.detalleProducto.fecha_vigencia_desde} {} 
+                      hasta: {item.detalleProducto.fecha_vigencia_hasta}
+                    </p>
                     <ItemCount
                       stock={item.quantity}
                       item={item}

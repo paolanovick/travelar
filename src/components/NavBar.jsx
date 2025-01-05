@@ -25,6 +25,7 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
         backgroundColor: "#f8f9fa",
         boxShadow: "0px 4px 6px rgba(19, 18, 18, 0.1)",
         flexWrap: "wrap",
+        margin: "20px",
       }}
     >
       <div style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>
