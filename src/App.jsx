@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import "./app.css"; // Asegúrate de que la ruta sea correcta
-import Footer from "./components/Footer"; 
+import Footer from "./components/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemList from "./components/ItemList";
 import { XMLParser } from "fast-xml-parser"; // Importa el parser XML
@@ -76,7 +76,7 @@ const App = () => {
         }
         return false;
       });
-      
+
       setPaquetesFiltrados(paquetesFiltradosPorPais);
     }
   }, [paisSeleccionado, paquetes]); // Dependencias: se ejecuta cuando cambian paisSeleccionado o paquetes
@@ -99,7 +99,7 @@ const App = () => {
           <Routes>
             <Route
               path="/"
-              element={<ItemListContainer paquetes={paquetesFiltrados} />}
+              element={<ItemList paquetes={paquetesFiltrados} />}
             />
 
             <Route
@@ -115,7 +115,7 @@ const App = () => {
 
             <Route path="/confirmacion" element={<Confirmation />} />
           </Routes>
-         
+
           <Footer />
         </div>
       </BrowserRouter>

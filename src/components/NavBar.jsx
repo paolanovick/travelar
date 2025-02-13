@@ -6,8 +6,10 @@ import Carrito from "./Carrito";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import CardWidget from "./CardWidget";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
+  const navigate = useNavigate();
   const { cartCount } = useCart();
 
   // Controlar el cambio de país
@@ -43,7 +45,10 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
           <Button
             key={index}
             label={pais}
-            onClick={() => onPaisSeleccionado(pais)} // Filtra los paquetes por el país seleccionado
+            onClick={() => {
+              onPaisSeleccionado(pais);
+              navigate("/paquetes");
+            }} // Filtra los paquetes por el país seleccionado
           />
         ))}
       </div>
