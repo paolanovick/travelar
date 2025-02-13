@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-
+import { useLanguage } from "../context/LanguageContext"; // Usa el hook useLanguage en lugar de languageProvider
 const Footer = () => {
+  const { language, changeLanguage } = useLanguage();
+  const handleClick = () => {
+    changeLanguage("EN");
+  };
+
   return (
     <footer style={styles.footer}>
       {/* Nombre en el Footer */}
@@ -9,7 +14,11 @@ const Footer = () => {
 
       {/* Textos típicos de un footer */}
       <div style={styles.textoFooter}>
-        <p>&copy; 2024 TravelAr. Todos los derechos reservados.</p>
+        <p onClick={() => handleClick()}>
+          {language === "es"
+            ? "© 2024 TravelAr. Todos los derechos reservados."
+            : "© 2024 TravelAr. All rights reserved."}
+        </p>
         <p>
           <a href="/politica-privacidad" style={styles.enlace}>
             Política de privacidad

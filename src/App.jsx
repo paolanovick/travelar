@@ -14,6 +14,7 @@ import Checkout from "./components/Checkout";
 import Confirmation from "./components/Confirmation";
 import CardWidget from "./components/CardWidget";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { LanguageProvider } from "./context/LanguageContext";
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
@@ -87,39 +88,41 @@ const App = () => {
   };
 
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <div>
-          <NavBar
-            nombre="TravelAr"
-            botonLabel="Ver Paquetes"
-            paises={paises}
-            onPaisSeleccionado={handlePaisSeleccionado}
-          />
-          <Routes>
-            <Route
-              path="/"
-              element={<ItemList paquetes={paquetesFiltrados} />}
+    <LanguageProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <div>
+            <NavBar
+              nombre="TravelAr"
+              botonLabel="Ver Paquetes"
+              paises={paises}
+              onPaisSeleccionado={handlePaisSeleccionado}
             />
+            <Routes>
+              <Route
+                path="/"
+                element={<ItemList paquetes={paquetesFiltrados} />}
+              />
 
-            <Route
-              path="/paquetes"
-              element={<ItemList paquetes={paquetesFiltrados} />}
-            />
-            <Route
-              path="/detalle/:idProducto"
-              element={<ItemDetailContainer />}
-            />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
+              <Route
+                path="/paquetes"
+                element={<ItemList paquetes={paquetesFiltrados} />}
+              />
+              <Route
+                path="/detalle/:idProducto"
+                element={<ItemDetailContainer />}
+              />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
 
-            <Route path="/confirmacion" element={<Confirmation />} />
-          </Routes>
+              <Route path="/confirmacion" element={<Confirmation />} />
+            </Routes>
 
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </CartProvider>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </CartProvider>
+    </LanguageProvider>
   );
 };
 
