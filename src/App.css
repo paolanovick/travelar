@@ -14,9 +14,41 @@
   }
 }
 
+/* Estilo para pantallas grandes */
+nav {
+  max-width: 1200px; /* Limita el ancho máximo */
+  margin: 0 auto; /* Centra el contenido */
+}
+
+/* Para pantallas pequeñas (móviles y tablets) */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column; /* Cambia la dirección a columna */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+  }
+
+  nav img {
+    width: 100px; /* Ajusta el tamaño del logo */
+  }
+
+  nav div {
+    width: 100%; /* Asegura que los botones ocupen todo el ancho */
+    margin-bottom: 10px; /* Espaciado entre elementos */
+  }
+}
+@media (max-width: 768px) {
+  nav div:nth-child(2) {
+    display: block; /* Muestra el ícono de hamburguesa en pantallas pequeñas */
+  }
+  
+  nav div:nth-child(3) {
+    display: none; /* Oculta los botones del menú en pantallas pequeñas por defecto */
+  }
+}
+
 
 .card {
-  padding: 2em;
+  padding: 5px;
 }
 
 .read-the-docs {
@@ -41,7 +73,8 @@
   border-radius: 15px; /* Bordes redondeados */
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin:5px; /* Sombra suave */
 }
 
 .card:hover {
@@ -81,17 +114,8 @@
   text-decoration: none;
 }
 
-.btn {
-  background-color: #007bff;
-  color: white;
-  border-radius: 50px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
-}
 
-.btn:hover {
-  background-color: #0056b3;
-}
+
 
 .transform-card {
   transform: scale(1); /* Escalado inicial */
@@ -209,10 +233,6 @@ form {
 }
 
 
-
-button:hover {
-  background-color: #0056b3;
-}
 
 /* Contenedor que contiene las tarjetas */
 .card-container {

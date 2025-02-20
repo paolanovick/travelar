@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-unused-vars */
 import React, { createContext, useState, useContext } from "react"; // Asegúrate de importar React
 import PropTypes from "prop-types"; // Importa PropTypes si lo necesitas
 

@@ -15,6 +15,28 @@ import Confirmation from "./components/Confirmation";
 import CardWidget from "./components/CardWidget";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LanguageProvider } from "./context/LanguageContext";
+import Carousel from "./components/Carousel";
+import Inicio from "./components/Inicio";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+// Configuración de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBo89OyesZwSRBkx-FERQhErX8zVe4uTUQ",
+  authDomain: "travelfar-3f8d9.firebaseapp.com",
+  projectId: "travelfar-3f8d9",
+  storageBucket: "travelfar-3f8d9.firebasestorage.app",
+  messagingSenderId: "878666935919",
+  appId: "1:878666935919:web:eb62ed6e0cc26a5418679a"
+};
+
+
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+
+// Inicializar Firestore (opcional)
+const db = getFirestore(app);
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
@@ -23,6 +45,8 @@ const App = () => {
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
+
+  
   useEffect(() => {
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
@@ -91,7 +115,18 @@ const App = () => {
     <LanguageProvider>
       <CartProvider>
         <BrowserRouter>
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "20px",
+              maxWidth: "1200px",
+              margin: "0 auto",
+              backgroundColor: "black", // Fondo de la página negro
+              color: "white", // Texto blanco en la página
+            }}
+          >
             <NavBar
               nombre="TravelAr"
               botonLabel="Ver Paquetes"
@@ -99,11 +134,12 @@ const App = () => {
               onPaisSeleccionado={handlePaisSeleccionado}
             />
             <Routes>
+              <Route path="/" element={<Inicio />} />{" "}
+              {/* Aquí la ruta de Inicio */}
               <Route
                 path="/"
                 element={<ItemList paquetes={paquetesFiltrados} />}
               />
-
               <Route
                 path="/paquetes"
                 element={<ItemList paquetes={paquetesFiltrados} />}
@@ -114,7 +150,6 @@ const App = () => {
               />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
-
               <Route path="/confirmacion" element={<Confirmation />} />
             </Routes>
 
@@ -124,6 +159,7 @@ const App = () => {
       </CartProvider>
     </LanguageProvider>
   );
+  
 };
 
 export default App;

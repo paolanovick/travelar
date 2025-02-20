@@ -1,5 +1,6 @@
 {
   "name": "travel",
+  "homepage": "https://paolanovick.github.io/travelar",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +13,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "fast-xml-parser": "^4.5.1",
+    "firebase": "^11.3.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.7",
     "react-dom": "^18.3.1",
@@ -27,6 +29,7 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
+    "gh-pages": "^6.3.0",
     "globals": "^15.13.0",
     "vite": "^6.0.5"
   }

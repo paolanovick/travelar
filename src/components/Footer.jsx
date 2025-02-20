@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { useLanguage } from "../context/LanguageContext"; // Usa el hook useLanguage en lugar de languageProvider
+import { useLanguage } from "../context/LanguageContext";
+import logo from "../assets/logochico.png";
+
+
+// Usa el hook useLanguage en lugar de languageProvider
 const Footer = () => {
   const { language, changeLanguage } = useLanguage();
   const handleClick = () => {
@@ -9,15 +13,25 @@ const Footer = () => {
 
   return (
     <footer style={styles.footer}>
+      {/* Logo en el Footer */}
+      <div style={styles.logoContainer}>
+       
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ width: "100px", height: "auto" }}
+          />
+      
+      </div>
       {/* Nombre en el Footer */}
-      <div style={styles.nombre}>TravelAr</div>
+      <div style={styles.nombre}>Huella Austral</div>
 
       {/* Textos típicos de un footer */}
       <div style={styles.textoFooter}>
         <p onClick={() => handleClick()}>
           {language === "es"
-            ? "© 2024 TravelAr. Todos los derechos reservados."
-            : "© 2024 TravelAr. All rights reserved."}
+            ? "© 2025 Huella Austral. Todos los derechos reservados."
+            : "© 2025 Huella Austral. All rights reserved."}
         </p>
         <p>
           <a href="/politica-privacidad" style={styles.enlace}>
@@ -28,7 +42,7 @@ const Footer = () => {
             Términos y condiciones
           </a>
         </p>
-        <p>Contacto: contacto@travelar.com</p>
+        <p>Contacto: contacto@huellaaustral.com</p>
       </div>
     </footer>
   );
@@ -36,7 +50,7 @@ const Footer = () => {
 
 const styles = {
   footer: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#000000", // Fondo negro
     padding: "20px",
     textAlign: "center",
     boxShadow: "0px -2px 6px rgba(0, 0, 0, 0.1)",
@@ -49,16 +63,17 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     marginBottom: "10px",
-    color: "#007BFF",
+    color: "#ffffff", // Texto blanco
   },
   textoFooter: {
     fontSize: "14px",
-    color: "#6c757d",
+    color: "#ffffff", // Texto blanco
   },
   enlace: {
-    color: "#007BFF",
+    color: "#ffffff", // Enlace blanco
     textDecoration: "none",
   },
 };
+
 
 export default Footer;

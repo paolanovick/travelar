@@ -57,6 +57,7 @@ const Cart = () => {
         margin: "0 auto",
         display: "flex",
         gap: "20px",
+        
       }}
     >
       <div style={{ flex: 2 }}>
