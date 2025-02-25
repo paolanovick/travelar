@@ -7,14 +7,14 @@ const CarouselComponent = () => {
       <div
         style={{
           width: "100%",
-          maxWidth: "1000px", // Limita el ancho del carrusel
+          maxWidth: "100",
           margin: "0 auto", // Centra el carrusel horizontalmente
         }}
       >
         <Carousel>
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 custom-img"
               src="https://www.cronista.com/files/image/297/297515/5ffe0c67b08d6.webp?oe=jpg"
               alt="Imagen 1"
             />
@@ -26,7 +26,7 @@ const CarouselComponent = () => {
 
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 custom-img"
               src="https://www.infobae.com/resizer/v2/2XDN7M2ZINCNXMRK3VLBKXDK44.jpg?auth=006d347902a1cf6608a379151e3adfa6ce84957d6e1270e484a7aaf432bc88d9&smart=true&width=1200&height=900&quality=85"
               alt="Imagen 2"
             />
@@ -38,7 +38,7 @@ const CarouselComponent = () => {
 
           <Carousel.Item>
             <img
-              className="d-block w-100"
+              className="d-block w-100 custom-img"
               src="https://media.staticontent.com/media/pictures/c71926b6-a531-4b0f-960b-a4927c9628cc"
               alt="Imagen 3"
             />

@@ -27,10 +27,8 @@ const firebaseConfig = {
   projectId: "travelfar-3f8d9",
   storageBucket: "travelfar-3f8d9.firebasestorage.app",
   messagingSenderId: "878666935919",
-  appId: "1:878666935919:web:eb62ed6e0cc26a5418679a"
+  appId: "1:878666935919:web:eb62ed6e0cc26a5418679a",
 };
-
-
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
@@ -45,8 +43,6 @@ const App = () => {
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
-
-  
   useEffect(() => {
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
@@ -121,7 +117,6 @@ const App = () => {
               flexDirection: "column",
               alignItems: "center",
               padding: "20px",
-              maxWidth: "1200px",
               margin: "0 auto",
               backgroundColor: "black", // Fondo de la página negro
               color: "white", // Texto blanco en la página
@@ -159,7 +154,6 @@ const App = () => {
       </CartProvider>
     </LanguageProvider>
   );
-  
 };
 
 export default App;

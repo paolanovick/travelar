@@ -13,6 +13,9 @@
     animation: logo-spin infinite 20s linear;
   }
 }
+.root {
+  background-color:black ;
+}
 
 /* Estilo para pantallas grandes */
 nav {
@@ -47,8 +50,15 @@ nav {
 }
 
 
+
 .card {
-  padding: 5px;
+  border: none;
+  border-radius: 15px; /* Bordes redondeados */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin:5px; 
+   padding: 5px;/* Sombra suave */
 }
 
 .read-the-docs {
@@ -68,14 +78,7 @@ nav {
 }
 /* Agregar a tu archivo CSS para una presentación más moderna */
 
-.card {
-  border: none;
-  border-radius: 15px; /* Bordes redondeados */
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin:5px; /* Sombra suave */
-}
+
 
 .card:hover {
   transform: translateY(-10px); /* Elevar la tarjeta al pasar el cursor */
@@ -309,6 +312,11 @@ form {
   margin: 5px 0;
   color: #666;
 }
+.custom-img {
+  height: 650px;  /* Ajusta la altura deseada */
+  object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsionarse */
+}
+
 
 /* Botón */
 .back-button {
