@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import "./app.css"; // Asegúrate de que la ruta sea correcta
+import "./App.css"; // Asegúrate de que la ruta sea correcta
 import Footer from "./components/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ItemList from "./components/ItemList";
