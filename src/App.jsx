@@ -43,6 +43,10 @@ const App = () => {
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
+
+
+  
+
   useEffect(() => {
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
