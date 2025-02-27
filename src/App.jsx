@@ -47,7 +47,7 @@ const App = () => {
     const soloPaises = paquetes.map(paquete => paquete.destinos.destino.pais)
     const sinUndefined = soloPaises.filter(pais => pais !== undefined)
     const paisesSinDuplicados = [...new Set(sinUndefined)]
-
+    const pepito = {};
     return paisesSinDuplicados
   }
 
