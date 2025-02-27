@@ -41,8 +41,7 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
             style={{
               width: "auto",
               height: "auto",
-              maxHeight: "50px",
-              maxWidth: "100px",
+             
             }}
           />
         </Link>
