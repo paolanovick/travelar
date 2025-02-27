@@ -38,78 +38,104 @@ const db = getFirestore(app);
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
-  const [paquetesFiltrados, setPaquetesFiltrados] = useState([]); // Paquetes filtrados por país
+  // const [paquetesFiltrados, setPaquetesFiltrados] = useState([]); // Paquetes filtrados por país
   const [error, setError] = useState(null);
   const [paises, setPaises] = useState([]); // Lista de países
-  const [paisSeleccionado, setPaisSeleccionado] = useState("");
+  // const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
+  const obtenerPaises = paquetes => {
+    const soloPaises = paquetes.map(paquete => paquete.destinos.destino.pais)
+    const sinUndefined = soloPaises.filter(pais => pais !== undefined)
+    const paisesSinDuplicados = [...new Set(sinUndefined)]
 
-
-  
+    return paisesSinDuplicados
+  }
 
   useEffect(() => {
-    fetch(`/admin/xml/allseasons.xml`)
-      .then((response) => {
+    fetch('/api/admin/xml/allseasons.xml')
+      .then(response => {
         if (!response.ok) {
-          throw new Error("No se pudo cargar el archivo XML.");
+            throw new Error('Network response was not ok')
         }
-        return response.text();
+        return response.text()
       })
-      .then((data) => {
-        const parser = new XMLParser();
-        const jsonData = parser.parse(data);
+      .then(xmlText => {
+        const parser = new XMLParser()
+        const xmlDoc = parser.parse(xmlText)
+        const todosLosPaquetes = xmlDoc.root.paquetes.paquete
+        const nombresPaises = obtenerPaises(todosLosPaquetes)
 
-        if (jsonData?.root?.paquetes?.paquete) {
-          const paquetesData = jsonData.root.paquetes.paquete;
-          const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
-          setPaquetes(paquetesData);
-          setPaquetesFiltrados(paquetesLimitados);
-
-          // Filtrar países únicos
-          const paisesUnicos = [
-            ...new Set(
-              paquetesData.flatMap(
-                (paquete) => paquete?.destinos?.destino?.pais || []
-              )
-            ),
-          ];
-          setPaises(paisesUnicos);
-        } else {
-          console.error("Estructura de datos inesperada:", jsonData);
-          setError("No se encontraron paquetes.");
-        }
+        setPaises(nombresPaises)
+        setPaquetes(todosLosPaquetes)
       })
-      .catch((error) => {
-        setError(`Error al obtener los paquetes: ${error.message}`);
-        console.error("Error al obtener los paquetes:", error);
-      });
-  }, []); // Este useEffect solo se ejecuta una vez al montar el componente
+      .catch(error => {
+        console.error(`There was a problem with the fetch operation:`, error)
+      })
+  }, [])
 
-  // Filtrar paquetes por país cuando el país seleccionado cambie
-  useEffect(() => {
-    if (paisSeleccionado === "") {
-      setPaquetesFiltrados(paquetes); // Muestra todos los paquetes si no hay filtro
-    } else {
-      const paquetesFiltradosPorPais = paquetes.filter((paquete) => {
-        const destinos = paquete?.destinos?.destino;
-        // Verificar si destinos es un arreglo antes de usar .some()
-        if (Array.isArray(destinos)) {
-          return destinos.some(
-            (destino) =>
-              destino.pais?.toLowerCase() === paisSeleccionado.toLowerCase()
-          );
-        }
-        return false;
-      });
+  // useEffect(() => {
+  //   fetch()
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("No se pudo cargar el archivo XML.");
+  //       }
+  //       return response.text();
+  //     })
+  //     .then((data) => {
+  //       const parser = new XMLParser();
+  //       const jsonData = parser.parse(data);
 
-      setPaquetesFiltrados(paquetesFiltradosPorPais);
-    }
-  }, [paisSeleccionado, paquetes]); // Dependencias: se ejecuta cuando cambian paisSeleccionado o paquetes
+  //       if (jsonData?.root?.paquetes?.paquete) {
+  //         const paquetesData = jsonData.root.paquetes.paquete;
+  //         const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
+  //         setPaquetes(paquetesData);
+  //         setPaquetesFiltrados(paquetesLimitados);
+
+  //         // Filtrar países únicos
+  //         const paisesUnicos = [
+  //           ...new Set(
+  //             paquetesData.flatMap(
+  //               (paquete) => paquete?.destinos?.destino?.pais || []
+  //             )
+  //           ),
+  //         ];
+  //         setPaises(paisesUnicos);
+  //       } else {
+  //         console.error("Estructura de datos inesperada:", jsonData);
+  //         setError("No se encontraron paquetes.");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(`Error al obtener los paquetes: ${error.message}`);
+  //       console.error("Error al obtener los paquetes:", error);
+  //     });
+  // }, []); // Este useEffect solo se ejecuta una vez al montar el componente
+
+  // // Filtrar paquetes por país cuando el país seleccionado cambie
+  // useEffect(() => {
+  //   if (paisSeleccionado === "") {
+  //     setPaquetesFiltrados(paquetes); // Muestra todos los paquetes si no hay filtro
+  //   } else {
+  //     const paquetesFiltradosPorPais = paquetes.filter((paquete) => {
+  //       const destinos = paquete?.destinos?.destino;
+  //       // Verificar si destinos es un arreglo antes de usar .some()
+  //       if (Array.isArray(destinos)) {
+  //         return destinos.some(
+  //           (destino) =>
+  //             destino.pais?.toLowerCase() === paisSeleccionado.toLowerCase()
+  //         );
+  //       }
+  //       return false;
+  //     });
+
+  //     setPaquetesFiltrados(paquetesFiltradosPorPais);
+  //   }
+  // }, [paisSeleccionado, paquetes]); // Dependencias: se ejecuta cuando cambian paisSeleccionado o paquetes
 
   // Función para manejar el cambio de país seleccionado
-  const handlePaisSeleccionado = (pais) => {
-    setPaisSeleccionado(pais);
-  };
+  // const handlePaisSeleccionado = (pais) => {
+  //   setPaisSeleccionado(pais);
+  // };
 
   return (
     <LanguageProvider>
@@ -130,22 +156,16 @@ const App = () => {
               nombre="TravelAr"
               botonLabel="Ver Paquetes"
               paises={paises}
-              onPaisSeleccionado={handlePaisSeleccionado}
             />
             <Routes>
               <Route path="/" element={<Inicio />} />{" "}
-              {/* Aquí la ruta de Inicio */}
               <Route
-                path="/"
-                element={<ItemList paquetes={paquetesFiltrados} />}
-              />
-              <Route
-                path="/paquetes"
-                element={<ItemList paquetes={paquetesFiltrados} />}
+                path="/paquetes/:pais"
+                element={<ItemList listaPaquetes={paquetes} />}
               />
               <Route
                 path="/detalle/:idProducto"
-                element={<ItemDetailContainer />}
+                element={<ItemDetailContainer paquetes={paquetes} />}
               />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />

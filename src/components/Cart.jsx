@@ -99,7 +99,7 @@ const Cart = () => {
                   />
                   <div>
                     <h3 style={{ margin: 0, fontSize: "18px", color: "#333" }}>
-                      {item.detalleProducto.titulo}
+                      {item.detalleProducto.titulo.replace("<br>", "")}
                     </h3>
                     <p style={{ margin: "5px 0", color: "#777" }}>
                       {item.detalleProducto.descripcion}
@@ -138,17 +138,8 @@ const Cart = () => {
                         item.detalleProducto.paquete_externo_id
                       )
                     }
-                    style={{
-                      backgroundColor: "#ff3b30",
-                      color: "#fff",
-                      padding: "8px 15px",
-                      borderRadius: "5px",
-                      border: "none",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      marginTop: "10px",
-                      transition: "background-color 0.3s ease",
-                    }}
+                    bg='black'
+                    color='white'
                   />
                 </div>
               </div>
@@ -182,7 +173,7 @@ const Cart = () => {
             currency: "ARS",
           })}
         </p>
-        <Button label="Finalizar Compra" onClick={handleCheckout} />
+        <Button label="Finalizar Compra este" onClick={handleCheckout} color='black' />
       </div>
     </div>
   );

@@ -2,13 +2,13 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-const Button = ({ label, onClick }) => {
+const Button = ({ label, onClick, color, bg }) => {
   return (
     <button
       style={{
-        color: "white", // Texto blanco
+        color: color, // Texto blanco
         border: "none", // Sin borde
-        backgroundColor: "transparent", // Fondo transparente
+        backgroundColor: bg, // Fondo transparente
         padding: "10px 20px", // Espaciado
         cursor: "pointer", // Cursor tipo mano
         fontSize: "16px", // Fuente más grande
