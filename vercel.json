@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api",
-      "destination": "https://travel-tool.net"
+      "destination": "https://travel-tool.net/admin/xml/allseasons.xml"
     }
   ]
 }

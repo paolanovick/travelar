@@ -52,7 +52,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    fetch('/api/admin/xml/allseasons.xml')
+    fetch('/api')
       .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok')
