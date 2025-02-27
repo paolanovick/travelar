@@ -69,7 +69,7 @@ const App = () => {
 
         console.log(jsonData);
 
-  //       if (jsonData?.root?.paquetes?.paquete) {
+  //      if (jsonData?.root?.paquetes?.paquete) {
   //         const paquetesData = jsonData.root.paquetes.paquete;
   //         const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
   //         setPaquetes(paquetesData);
