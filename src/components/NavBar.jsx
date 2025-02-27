@@ -1,5 +1,3 @@
-
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
@@ -9,8 +7,8 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import CardWidget from "./CardWidget";
 import logo from "../assets/logochico.png"; // Ajusta la ruta según la ubicación del archivo
+
 import { useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
 
 const NavBar = ({ nombre, botonLabel, paises }) => {
   const navigate = useNavigate();
@@ -58,33 +56,7 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
           justifyContent: "center", // Espaciado uniforme
         }}
       >
-         {/* Botón de menú hamburguesa (visible solo en móvil) */}
-      <div
-        style={{
-          display: "none",
-          cursor: "pointer",
-        }}
-        className="menu-icon"
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        {menuOpen ? <X size={30} color="white" /> : <Menu size={30} color="white" />}
-      </div>
-
-      {/* Menú de navegación */}
-      <div
-        style={{
-          display: menuOpen ? "flex" : "none",
-          flexDirection: "column",
-          position: "absolute",
-          top: "60px",
-          left: 0,
-          width: "100%",
-          backgroundColor: "black",
-          padding: "10px 0",
-          textAlign: "center",
-        }}
-        className="nav-links"
-      ></div>
+        
         <Link to="/" style={{ textDecoration: "none" }}>
           <Button 
             label="Inicio" 
