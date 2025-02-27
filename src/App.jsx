@@ -15,10 +15,9 @@ import Confirmation from "./components/Confirmation";
 import CardWidget from "./components/CardWidget";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LanguageProvider } from "./context/LanguageContext";
-import Carousel from "./components/Carousel";
 import Inicio from "./components/Inicio";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -43,57 +42,73 @@ const App = () => {
   const [paises, setPaises] = useState([]); // Lista de países
   // const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
-  const obtenerPaquetes = async () => {
-    const querySnapshot = await getDocs(collection(db, "items"));
+  const obtenerPaises = (paquetes) => {
+    const soloPaises = paquetes.map((paquete) => paquete.destinos.destino.pais);
+    const sinUndefined = soloPaises.filter((pais) => pais !== undefined);
+    const paisesSinDuplicados = [...new Set(sinUndefined)];
 
-    const resultados = [];
-    querySnapshot.forEach((doc) => {
-      resultados.push (doc.data())
-    });
-    return resultados;
+    return paisesSinDuplicados;
   };
 
   useEffect(() => {
-   /* obtenerPaquetes().then(res => setPaquetes(res));*/
-
-    fetch(`/admin/xml/allseasons.xml`)
+    fetch("/api")
       .then((response) => {
         if (!response.ok) {
-          throw new Error("No se pudo cargar el archivo XML.");
+          throw new Error("Network response was not ok");
         }
         return response.text();
       })
-      .then((data) => {
+      .then((xmlText) => {
         const parser = new XMLParser();
-        const jsonData = parser.parse(data);
+        const xmlDoc = parser.parse(xmlText);
+        const todosLosPaquetes = xmlDoc.root.paquetes.paquete;
+        const nombresPaises = obtenerPaises(todosLosPaquetes);
 
-        console.log(jsonData);
+        setPaises(nombresPaises);
+        setPaquetes(todosLosPaquetes);
+      })
+      .catch((error) => {
+        console.error(`There was a problem with the fetch operation:`, error);
+      });
+  }, []);
 
-  //      if (jsonData?.root?.paquetes?.paquete) {
+  // useEffect(() => {
+  //   fetch()
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("No se pudo cargar el archivo XML.");
+  //       }
+  //       return response.text();
+  //     })
+  //     .then((data) => {
+  //       const parser = new XMLParser();
+  //       const jsonData = parser.parse(data);
+
+  //       if (jsonData?.root?.paquetes?.paquete) {
   //         const paquetesData = jsonData.root.paquetes.paquete;
   //         const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
   //         setPaquetes(paquetesData);
   //         setPaquetesFiltrados(paquetesLimitados);
 
-          // Filtrar países únicos
-          const paisesUnicos = [
-            ...new Set(
-              paquetesData.flatMap(
-                (paquete) => paquete?.destinos?.destino?.pais || []
-              )
-            ),
-          ];
-          setPaises(paisesUnicos);
-        } else {
-          console.error("Estructura de datos inesperada:", jsonData);
-          setError("No se encontraron paquetes.");
-        }
-      })
-      .catch((error) => {
-        setError(`Error al obtener los paquetes: ${error.message}`);
-        console.error("Error al obtener los paquetes:", error);
-      }); 
-  }, []); // Este useEffect solo se ejecuta una vez al montar el componente
+  //         // Filtrar países únicos
+  //         const paisesUnicos = [
+  //           ...new Set(
+  //             paquetesData.flatMap(
+  //               (paquete) => paquete?.destinos?.destino?.pais || []
+  //             )
+  //           ),
+  //         ];
+  //         setPaises(paisesUnicos);
+  //       } else {
+  //         console.error("Estructura de datos inesperada:", jsonData);
+  //         setError("No se encontraron paquetes.");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(`Error al obtener los paquetes: ${error.message}`);
+  //       console.error("Error al obtener los paquetes:", error);
+  //     });
+  // }, []); // Este useEffect solo se ejecuta una vez al montar el componente
 
   // // Filtrar paquetes por país cuando el país seleccionado cambie
   // useEffect(() => {
@@ -133,7 +148,8 @@ const App = () => {
               padding: "20px",
               margin: "0 auto",
               backgroundColor: "black", // Fondo de la página negro
-              color: "white", // Texto blanco en la página
+              color: "white",
+              width: "100%", // Texto blanco en la página
             }}
           >
             <NavBar
