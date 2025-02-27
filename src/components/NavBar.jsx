@@ -39,7 +39,7 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
             src={logo}
             alt="Logo"
             style={{
-              width: "auto",
+              width: "80%",
               height: "auto",
              
             }}
