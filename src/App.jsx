@@ -38,10 +38,10 @@ const db = getFirestore(app);
 
 const App = () => {
   const [paquetes, setPaquetes] = useState([]); // Todos los paquetes
-  const [paquetesFiltrados, setPaquetesFiltrados] = useState([]); // Paquetes filtrados por país
+  // const [paquetesFiltrados, setPaquetesFiltrados] = useState([]); // Paquetes filtrados por país
   const [error, setError] = useState(null);
   const [paises, setPaises] = useState([]); // Lista de países
-  const [paisSeleccionado, setPaisSeleccionado] = useState("");
+  // const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
   const obtenerPaquetes = async () => {
     const querySnapshot = await getDocs(collection(db, "items"));
@@ -69,11 +69,11 @@ const App = () => {
 
         console.log(jsonData);
 
-        if (jsonData?.root?.paquetes?.paquete) {
-          const paquetesData = jsonData.root.paquetes.paquete;
-          const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
-          setPaquetes(paquetesData);
-          setPaquetesFiltrados(paquetesLimitados);
+  //       if (jsonData?.root?.paquetes?.paquete) {
+  //         const paquetesData = jsonData.root.paquetes.paquete;
+  //         const paquetesLimitados = paquetesData.slice(0, 50); // Limitar a 50 paquetes
+  //         setPaquetes(paquetesData);
+  //         setPaquetesFiltrados(paquetesLimitados);
 
           // Filtrar países únicos
           const paisesUnicos = [
@@ -95,31 +95,31 @@ const App = () => {
       }); 
   }, []); // Este useEffect solo se ejecuta una vez al montar el componente
 
-  // Filtrar paquetes por país cuando el país seleccionado cambie
-  useEffect(() => {
-    if (paisSeleccionado === "") {
-      setPaquetesFiltrados(paquetes); // Muestra todos los paquetes si no hay filtro
-    } else {
-      const paquetesFiltradosPorPais = paquetes.filter((paquete) => {
-        const destinos = paquete?.destinos?.destino;
-        // Verificar si destinos es un arreglo antes de usar .some()
-        if (Array.isArray(destinos)) {
-          return destinos.some(
-            (destino) =>
-              destino.pais?.toLowerCase() === paisSeleccionado.toLowerCase()
-          );
-        }
-        return false;
-      });
+  // // Filtrar paquetes por país cuando el país seleccionado cambie
+  // useEffect(() => {
+  //   if (paisSeleccionado === "") {
+  //     setPaquetesFiltrados(paquetes); // Muestra todos los paquetes si no hay filtro
+  //   } else {
+  //     const paquetesFiltradosPorPais = paquetes.filter((paquete) => {
+  //       const destinos = paquete?.destinos?.destino;
+  //       // Verificar si destinos es un arreglo antes de usar .some()
+  //       if (Array.isArray(destinos)) {
+  //         return destinos.some(
+  //           (destino) =>
+  //             destino.pais?.toLowerCase() === paisSeleccionado.toLowerCase()
+  //         );
+  //       }
+  //       return false;
+  //     });
 
-      setPaquetesFiltrados(paquetesFiltradosPorPais);
-    }
-  }, [paisSeleccionado, paquetes]); // Dependencias: se ejecuta cuando cambian paisSeleccionado o paquetes
+  //     setPaquetesFiltrados(paquetesFiltradosPorPais);
+  //   }
+  // }, [paisSeleccionado, paquetes]); // Dependencias: se ejecuta cuando cambian paisSeleccionado o paquetes
 
   // Función para manejar el cambio de país seleccionado
-  const handlePaisSeleccionado = (pais) => {
-    setPaisSeleccionado(pais);
-  };
+  // const handlePaisSeleccionado = (pais) => {
+  //   setPaisSeleccionado(pais);
+  // };
 
   return (
     <LanguageProvider>
@@ -140,22 +140,16 @@ const App = () => {
               nombre="TravelAr"
               botonLabel="Ver Paquetes"
               paises={paises}
-              onPaisSeleccionado={handlePaisSeleccionado}
             />
             <Routes>
               <Route path="/" element={<Inicio />} />{" "}
-              {/* Aquí la ruta de Inicio */}
               <Route
-                path="/"
-                element={<ItemList paquetes={paquetesFiltrados} />}
-              />
-              <Route
-                path="/paquetes"
-                element={<ItemList paquetes={paquetesFiltrados} />}
+                path="/paquetes/:pais"
+                element={<ItemList listaPaquetes={paquetes} />}
               />
               <Route
                 path="/detalle/:idProducto"
-                element={<ItemDetailContainer />}
+                element={<ItemDetailContainer paquetes={paquetes} />}
               />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />

@@ -1,56 +1,70 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { XMLParser } from "fast-xml-parser";
 import { useCart } from "../context/CartContext";
-// Importa tu componente Button personalizado
-import Button from "../components/Button";
-
+import Button from "../components/Button";;
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 
-const ItemDetailContainer = () => {
+const ItemDetailContainer = ({ paquetes }) => {
   const [detalleProducto, setDetalleProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { idProducto } = useParams();
-  const { addToCart } = useCart(); // Obtención del ID del producto de la URL
+  const { addToCart } = useCart();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/admin/xml/allseasons.xml`);
-        if (!response.ok) {
-          throw new Error("No se pudo cargar el archivo XML.");
-        }
-        const xml = await response.text();
-        const parser = new XMLParser();
-        const jsonData = parser.parse(xml); // Parseamos el XML a JSON
+    const buscarDetalle = () => {
+      const detalle = paquetes.find(paquete => paquete.paquete_externo_id == idProducto)
 
-        const paquetes = jsonData?.root?.paquetes?.paquete;
-        if (paquetes && paquetes.length > 0) {
-          // Buscar el producto que coincida con el idProducto
-          const producto = paquetes?.find((item) => {
-            return String(item.paquete_externo_id) === String(idProducto);
-          });
-
-          if (producto) {
-            setDetalleProducto(producto);
-          } else {
-            setError("Producto no encontrado.");
-          }
-        }
-      } catch (err) {
-        setError("Error al obtener los detalles del producto.");
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (detalle) {
+        console.log(detalle)
+        setDetalleProducto(detalle)
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, [idProducto]);
+    buscarDetalle()
+  }, [paquetes, idProducto])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`/admin/xml/allseasons.xml`);
+  //       if (!response.ok) {
+  //         throw new Error("No se pudo cargar el archivo XML.");
+  //       }
+  //       const xml = await response.text();
+  //       const parser = new XMLParser();
+  //       const jsonData = parser.parse(xml); // Parseamos el XML a JSON
+
+  //       const paquetes = jsonData?.root?.paquetes?.paquete;
+  //       if (paquetes && paquetes.length > 0) {
+  //         // Buscar el producto que coincida con el idProducto
+  //         const producto = paquetes?.find((item) => {
+  //           return String(item.paquete_externo_id) === String(idProducto);
+  //         });
+
+  //         if (producto) {
+  //           setDetalleProducto(producto);
+  //         } else {
+  //           setError("Producto no encontrado.");
+  //         }
+  //       }
+  //     } catch (err) {
+  //       setError("Error al obtener los detalles del producto.");
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [idProducto]);
 
   // Función para obtener el precio disponible
+  
   const obtenerPrecioValido = (paquete) => {
     // Acceder a los precios de las distintas opciones de paquetes
     const precios = [
@@ -140,14 +154,14 @@ const ItemDetailContainer = () => {
         <Col md={8} className="descripcion">
           <Card className="product-details">
             <Card.Body>
-              <Card.Title>{titulo}</Card.Title>
+              <Card.Title>{titulo.replace("<br>", "")}</Card.Title>
               <Card.Text>{descripcion}</Card.Text>
               {detalleProducto && (
                 <div className="precios">
                   {renderPrecio(detalleProducto)} {/* Muestra el precio aquí */}
                 </div>
               )}
-              <Button label="Agregar al carrito" onClick={handleAddToCart} />
+              <Button label="Agregar al carrito" onClick={handleAddToCart} bg='black' color='white' />
             </Card.Body>
           </Card>
         </Col>
@@ -156,12 +170,10 @@ const ItemDetailContainer = () => {
         <h2 className="text-center text-primary mb-4">
           ¡Descubre Tu Próximo Destino!
         </h2>
-
-        {/* Destinos */}
-        {destinos && destinos.destino && destinos.destino.length > 0 && (
-          <div className="row g-4">
+        <Container>
+        <div className="row g-4">
             <div className="col-md-4">
-              <div className="card shadow-lg border-0 rounded-3">
+              <div className="card shadow-lg border-0 rounded-3 w-100">
                 <div
                   className="card-header text-white p-4"
                   style={{
@@ -169,24 +181,36 @@ const ItemDetailContainer = () => {
                       "url('https://via.placeholder.com/600x200?text=Destinos')",
                   }}
                 >
-                  <h4 className="card-title text-center">Destinos</h4>
+                  <h4 className="card-title text-center text-dark">Destinos</h4>
                 </div>
                 <div className="card-body">
-                  {destinos.destino.map((destino, index) => (
-                    <div key={index} className="mb-3">
+                  {Array.isArray(destinos.destino) ? (
+                    <>
+                      {destinos.destino.map((destino, index) => (
+                        <div key={index} className="mb-3">
+                          <p>
+                            <strong>País:</strong> {destino.pais}
+                          </p>
+                          <p>
+                            <strong>Ciudad:</strong> {destino.ciudad}
+                          </p>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="mb-3">
                       <p>
-                        <strong>País:</strong> {destino.pais}
+                        <strong>País:</strong> {destinos.destino.pais}
                       </p>
                       <p>
-                        <strong>Ciudad:</strong> {destino.ciudad}
+                        <strong>Ciudad:</strong> {destinos.destino.ciudad}
                       </p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Incluye */}
             {incluye && (
               <div className="col-md-4">
                 <div className="card shadow-lg border-0 rounded-3">
@@ -197,7 +221,7 @@ const ItemDetailContainer = () => {
                         "url('https://via.placeholder.com/600x200?text=Lo+que+Incluye')",
                     }}
                   >
-                    <h4 className="card-title text-center">Incluye</h4>
+                    <h4 className="card-title text-center text-dark">Incluye</h4>
                   </div>
                   <div className="card-body">
                     <div dangerouslySetInnerHTML={{ __html: incluye }} />
@@ -206,10 +230,9 @@ const ItemDetailContainer = () => {
               </div>
             )}
 
-            {/* Hoteles */}
-            {hoteles && hoteles.hotel && hoteles.hotel.length > 0 && (
+              {/* HOTELES */}
               <div className="col-md-4">
-                <div className="card shadow-lg border-0 rounded-3">
+                <div className="card shadow-lg border-0 rounded-3 w-100">
                   <div
                     className="card-header text-white p-4"
                     style={{
@@ -217,27 +240,41 @@ const ItemDetailContainer = () => {
                         "url('https://via.placeholder.com/600x200?text=Hoteles')",
                     }}
                   >
-                    <h4 className="card-title text-center">Hoteles</h4>
+                    <h4 className="card-title text-center text-dark">Hoteles</h4>
                   </div>
                   <div className="card-body">
-                    {hoteles.hotel.map((hotel, index) => (
-                      <div key={index} className="mb-3">
+                    {Array.isArray(hoteles.hotel) ? (
+                      <>
+                        {hoteles.hotel.map((hotel, index) => (
+                          <div key={index} className="mb-3">
+                            <p>
+                              <strong>Nombre del hotel:</strong> {hotel.nombre}
+                            </p>
+                            <p>
+                              <strong>Categoría:</strong> {hotel.categoria_hotel}{" "}
+                              estrellas
+                            </p>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <div className="mb-3">
                         <p>
-                          <strong>Nombre del hotel:</strong> {hotel.nombre}
+                          <strong>Nombre del hotel:</strong> {hoteles.hotel.nombre}
                         </p>
                         <p>
-                          <strong>Categoría:</strong> {hotel.categoria_hotel}{" "}
+                          <strong>Categoría:</strong> {hoteles.hotel.categoria_hotel}{" "}
                           estrellas
                         </p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               </div>
-            )}
           </div>
-        )}
+          </Container>
       </div>
+
       {/* Precios */}
       {precios && (
         <div className="precios">

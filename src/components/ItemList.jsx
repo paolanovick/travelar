@@ -1,15 +1,24 @@
+/* eslint-disable react/prop-types */
 
 /* eslint-disable no-unused-vars */
 import React from "react";
-import PropTypes from "prop-types"; // Importa PropTypes
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import { useCart } from "../context/CartContext";
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 // Importa el componente Button
 
-const ItemList = ({ paquetes }) => {
+const ItemList = ({ listaPaquetes }) => {
+  const [paquetes, setPaquetes] = useState([])
   const { agregarAlCarrito } = useCart();
+  const { pais } = useParams()
+
+  const filtrarPaquetesPorPais = (paquetes, pais) => {
+    const paquetesFiltrados = paquetes.filter(paquete => paquete.destinos.destino.pais === pais)
+    setPaquetes(paquetesFiltrados)
+  }
 
   // Función para obtener el precio disponible
   const obtenerPrecioValido = (paquete) => {
@@ -36,6 +45,14 @@ const ItemList = ({ paquetes }) => {
     return "No disponible"; // Si no hay precios válidos
   };
 
+  useEffect(() => {
+    if (pais === 'todos') {
+      setPaquetes(listaPaquetes)
+    } else {
+      filtrarPaquetesPorPais(listaPaquetes, pais)
+    }
+  }, [listaPaquetes, pais])
+
   return (
     <div className="row">
       {paquetes.map((paquete) => {
@@ -53,12 +70,17 @@ const ItemList = ({ paquetes }) => {
                 className="card-img-top"
               />
               <div className="card-body">
-                <h5 className="card-title">{paquete.titulo}</h5>
+                <h5 className="card-title">{paquete.titulo.replace("<br>", "")}</h5>
                 <p className="card-text">{paquete.descripcion}</p>
                 <p>Precio: {precioFormateado}</p>
                 <div className="m-3">
                   <Link to={`/detalle/${paquete.paquete_externo_id}`}>
-                    <Button label="Ver más" onClick={() => {}} />
+                    <Button 
+                      label="Ver más" 
+                      onClick={() => {}}
+                      color='white'
+                      bg='black' 
+                    />
                   </Link>
                 </div>
               </div>
@@ -68,11 +90,6 @@ const ItemList = ({ paquetes }) => {
       })}
     </div>
   );
-};
-
-
-ItemList.propTypes = {
-  paquetes: PropTypes.array.isRequired, // Asegúrate de que el array de paquetes sea requerido
 };
 
 export default ItemList;

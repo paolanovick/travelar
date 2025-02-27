@@ -10,7 +10,7 @@ import logo from "../assets/logochico.png"; // Ajusta la ruta segÃºn la ubicaciÃ
 
 import { useNavigate } from "react-router-dom";
 
-const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
+const NavBar = ({ nombre, botonLabel, paises }) => {
   const navigate = useNavigate();
   const { cartCount } = useCart();
 
@@ -58,11 +58,17 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
         }}
       >
         <Link to="/" style={{ textDecoration: "none" }}>
-          <Button label="Inicio" />
+          <Button 
+            label="Inicio" 
+            color='white'
+            bg='transparent' 
+          />
         </Link>
 
-        <Link to="/paquetes" style={{ textDecoration: "none" }}>
+        <Link to="/paquetes/todos" style={{ textDecoration: "none" }}>
           <Button
+            color='white'
+            bg='transparent'
             label={botonLabel}
             onClick={() => console.log("Navegando a Paquetes")}
           />
@@ -70,20 +76,19 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
 
         {paises.map((pais, index) => (
           <Button
+            color='white'
+            bg='transparent'
             key={index}
             label={pais}
             onClick={() => {
-              onPaisSeleccionado(pais);
-              navigate("/paquetes");
+              navigate(`paquetes/${pais}`);
             }}
           />
         ))}
       </div>
 
       <div style={{ display: "flex", alignItems: "center" }}>
-        <Link to="/cart" style={{ textDecoration: "none", marginLeft: "20px" }}>
-          <CardWidget />
-        </Link>
+        <CardWidget />
       </div>
     </nav>
   );

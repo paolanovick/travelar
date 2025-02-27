@@ -63,7 +63,7 @@ const formatTotal = (value) => {
 
   return (
     <div className="checkout-container">
-      <h2>Finalizar Compra</h2>
+      <h2 className='text-dark'>Finalizar Compra</h2>
       <div className="checkout-summary">
         <h3>Resumen de tu pedido</h3>
         <ul>
@@ -73,7 +73,7 @@ const formatTotal = (value) => {
             </li>
           ))}
         </ul>
-        <p>Total: ${formatTotal(total)}</p>
+        <p>Total: {formatTotal(total)}</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
