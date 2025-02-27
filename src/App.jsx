@@ -18,7 +18,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Carousel from "./components/Carousel";
 import Inicio from "./components/Inicio";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -43,11 +43,19 @@ const App = () => {
   const [paises, setPaises] = useState([]); // Lista de países
   const [paisSeleccionado, setPaisSeleccionado] = useState("");
 
+  const obtenerPaquetes = async () => {
+    const querySnapshot = await getDocs(collection(db, "items"));
 
-
-  
+    const resultados = [];
+    querySnapshot.forEach((doc) => {
+      resultados.push (doc.data())
+    });
+    return resultados;
+  };
 
   useEffect(() => {
+   /* obtenerPaquetes().then(res => setPaquetes(res));*/
+
     fetch(`/admin/xml/allseasons.xml`)
       .then((response) => {
         if (!response.ok) {
@@ -58,6 +66,8 @@ const App = () => {
       .then((data) => {
         const parser = new XMLParser();
         const jsonData = parser.parse(data);
+
+        console.log(jsonData);
 
         if (jsonData?.root?.paquetes?.paquete) {
           const paquetesData = jsonData.root.paquetes.paquete;
@@ -82,7 +92,7 @@ const App = () => {
       .catch((error) => {
         setError(`Error al obtener los paquetes: ${error.message}`);
         console.error("Error al obtener los paquetes:", error);
-      });
+      }); 
   }, []); // Este useEffect solo se ejecuta una vez al montar el componente
 
   // Filtrar paquetes por país cuando el país seleccionado cambie

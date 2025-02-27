@@ -26,12 +26,24 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
         boxShadow: "0px 4px 6px rgba(19, 18, 18, 0.1)",
       }}
     >
-     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%" }}>  
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
         <Link to="/">
           <img
             src={logo}
             alt="Logo"
-            style={{ width: "450px", height: "auto",}}
+            style={{
+              width: "auto",
+              height: "auto",
+              maxHeight: "50px",
+              maxWidth: "100px",
+            }}
           />
         </Link>
       </div>
@@ -41,7 +53,8 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
           display: "flex",
           alignItems: "center",
           flexWrap: "wrap", // Asegura que los botones se ajusten en pantallas pequeñas
-          gap: "15px", // Espaciado uniforme
+          gap: "15px",
+          justifyContent: "center", // Espaciado uniforme
         }}
       >
         <Link to="/" style={{ textDecoration: "none" }}>
@@ -72,8 +85,6 @@ const NavBar = ({ nombre, botonLabel, paises, onPaisSeleccionado }) => {
           <CardWidget />
         </Link>
       </div>
-      
-      
     </nav>
   );
 };

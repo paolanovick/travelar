@@ -8,7 +8,8 @@ const CarouselComponent = () => {
         style={{
           width: "100%",
           maxWidth: "100",
-          margin: "0 auto", // Centra el carrusel horizontalmente
+          margin: "0 auto",
+          overflow: "hidden", // Centra el carrusel horizontalmente
         }}
       >
         <Carousel>
