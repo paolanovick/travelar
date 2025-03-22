@@ -1,14 +1,13 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import Button from "./Button";
-import Carrito from "./Carrito";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import CardWidget from "./CardWidget";
 import logo from "../assets/logochico.png"; // Ajusta la ruta según la ubicación del archivo
 import { useNavigate } from "react-router-dom";
-import { FaBars, FaTimes } from 'react-icons/fa'; // Iconos para el menú hamburguesa
+import { FaBars, FaTimes } from "react-icons/fa"; // Iconos para el menú hamburguesa
 
 const NavBar = ({ nombre, botonLabel, paises }) => {
   const navigate = useNavigate();
@@ -19,6 +18,10 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false); // Cierra el menú
   };
 
   return (
@@ -40,11 +43,11 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
 
       {/* Menú principal, visible cuando 'menuOpen' es true en pantallas pequeñas */}
       <div className={`menu ${menuOpen ? "open" : ""}`}>
-        <Link to="/" className="menu-item">
+        <Link to="/" className="menu-item" onClick={closeMenu}>
           <Button label="Inicio" color="white" bg="transparent" />
         </Link>
 
-        <Link to="/paquetes/todos" className="menu-item">
+        <Link to="/paquetes/todos" className="menu-item" onClick={closeMenu}>
           <Button
             color="white"
             bg="transparent"
@@ -61,6 +64,7 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
             label={pais}
             onClick={() => {
               navigate(`paquetes/${pais}`);
+              closeMenu(); // Cierra el menú al elegir una opción
             }}
             className="menu-item"
           />
