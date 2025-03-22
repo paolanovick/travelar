@@ -1,74 +1,53 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import Carrito from "./Carrito";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import CardWidget from "./CardWidget";
 import logo from "../assets/logochico.png"; // Ajusta la ruta según la ubicación del archivo
-
 import { useNavigate } from "react-router-dom";
+import { FaBars, FaTimes } from 'react-icons/fa'; // Iconos para el menú hamburguesa
 
 const NavBar = ({ nombre, botonLabel, paises }) => {
   const navigate = useNavigate();
   const { cartCount } = useCart();
 
+  // Estado para manejar el menú hamburguesa
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap", // Permite que los elementos se ajusten en varias líneas
-        padding: "10px 20px",
-        backgroundColor: "black", // Fondo de la barra
-        boxShadow: "0px 4px 6px rgba(19, 18, 18, 0.1)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
+    <nav className="navbar">
+      <div className="logo-container">
         <Link to="/">
-          <img
-            src={logo}
-            alt="Logo"
-            style={{
-              width: "80%",
-              height: "auto",
-             
-            }}
-          />
+          <img src={logo} alt="Logo" className="logo" />
         </Link>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap", // Asegura que los botones se ajusten en pantallas pequeñas
-          gap: "15px",
-          justifyContent: "center", // Espaciado uniforme
-        }}
-      >
-        
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Button 
-            label="Inicio" 
-            color='white'
-            bg='transparent' 
-          />
+      {/* Botón de hamburguesa visible en dispositivos pequeños */}
+      <div className="hamburger" onClick={toggleMenu}>
+        {menuOpen ? (
+          <FaTimes size={30} color="white" />
+        ) : (
+          <FaBars size={30} color="white" />
+        )}
+      </div>
+
+      {/* Menú principal, visible cuando 'menuOpen' es true en pantallas pequeñas */}
+      <div className={`menu ${menuOpen ? "open" : ""}`}>
+        <Link to="/" className="menu-item">
+          <Button label="Inicio" color="white" bg="transparent" />
         </Link>
 
-        <Link to="/paquetes/todos" style={{ textDecoration: "none" }}>
+        <Link to="/paquetes/todos" className="menu-item">
           <Button
-            color='white'
-            bg='transparent'
+            color="white"
+            bg="transparent"
             label={botonLabel}
             onClick={() => console.log("Navegando a Paquetes")}
           />
@@ -76,18 +55,19 @@ const NavBar = ({ nombre, botonLabel, paises }) => {
 
         {paises.map((pais, index) => (
           <Button
-            color='white'
-            bg='transparent'
+            color="white"
+            bg="transparent"
             key={index}
             label={pais}
             onClick={() => {
               navigate(`paquetes/${pais}`);
             }}
+            className="menu-item"
           />
         ))}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div className="cart-icon">
         <CardWidget />
       </div>
     </nav>

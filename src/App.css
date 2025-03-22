@@ -321,6 +321,90 @@ form {
   margin-top: 20px;
 }
 
+/* Estilos básicos para el navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+  background-color: black;
+  box-shadow: 0px 4px 6px rgba(19, 18, 18, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  width: 80%;
+  height: auto;
+}
+
+.hamburger {
+  display: none; /* Ocultar el botón hamburguesa en pantallas grandes */
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+  flex-direction: row;
+}
+
+.menu-item {
+  text-decoration: none;
+}
+
+.cart-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* Mostrar el botón hamburguesa en pantallas pequeñas */
+  }
+
+  .menu {
+    display: none; /* Ocultar el menú por defecto en pantallas pequeñas */
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .menu.open {
+    display: flex; /* Mostrar el menú cuando está abierto */
+  }
+
+  .logo {
+    max-width: 350px;
+    max-height: 140px;
+  }
+
+  .menu-item {
+    margin: 10px 0;
+  }
+}
+
+/* Estilos para pantallas aún más pequeñas */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px;
+  }
+
+  .menu-item {
+    margin: 5px 0;
+  }
+}
 
 
 /* Para tabletas (pantallas medianas) */
@@ -329,65 +413,3 @@ form {
     grid-template-columns: repeat(4, 1fr); /* 4 tarjetas por fila en tablet */
   }
 }
-
-/* Para dispositivos móviles */
-@media (max-width: 768px) {
-  .card-container {
-    grid-template-columns: repeat(1, 1fr); 
-      nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-
-   nav {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  nav div {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-
-  nav img {
-    max-width: 150px;
-    max-height: 40px;
-     height: auto; /* Ajusta el tamaño del logo para pantallas pequeñas */
-  }
-
-  nav a {
-    padding: 5px;
-  }
-
-  .button-container {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .button-container a {
-    margin: 5px;
-  }
-}/* 1 tarjeta por fila en móviles */
-  }
-/* Estilos para pantallas de teléfono */
-@media (max-width: 480px) {
-  nav {
-    padding: 8px;
-  }
-
-  nav div {
-    margin-bottom: 5px;
-  }
-
-  .button-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
